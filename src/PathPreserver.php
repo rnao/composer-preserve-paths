@@ -198,6 +198,8 @@ class PathPreserver
             // to change that, so we can check if the file really exists.
             elseif (!is_executable($currentFolder)) {
                 $resetPerms[$currentFolder] = fileperms($currentFolder);
+                #DEBUG
+                echo "fileExists: inside parent folder: ($currentFolder)\n";
                 chmod($currentFolder, 0755);
             }
         }
@@ -208,6 +210,8 @@ class PathPreserver
 
         // Reset permissions in reverse order.
         foreach (array_reverse($resetPerms, true) as $folder => $mode) {
+          #DEBUG
+          echo "fileExists: reset permissions: ($folder, $mode)\n";
             chmod($folder, $mode);
         }
 
@@ -252,6 +256,8 @@ class PathPreserver
         }
 
         $this->filepermissions[$path] = fileperms($path);
+        #DEBUG
+        echo "makePathWriatble: $path\n";
         chmod($path, static::FILEPERM);
     }
 
@@ -266,6 +272,8 @@ class PathPreserver
         arsort($this->filepermissions);
 
         foreach ($this->filepermissions as $path => $perm) {
+          #DEBUG
+          echo "restorePathPermissions: ($path, $perm)\n";
             chmod($path, $perm);
         }
     }
